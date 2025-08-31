@@ -37,6 +37,13 @@ minvalue 1
 increment by 1
 no cycle;
 --------------------------------------------------------------------------
+--Sekvenca za ID porudzbine
+create sequence seq_por as int
+start with 1
+minvalue 1
+increment by 1
+no cycle
+--------------------------------------------------------------------------
 
 -- *********************************************************************--
 --KREIRANJE TABELA
@@ -59,4 +66,30 @@ CREATE TABLE projekat.Zaposleni (
 --Dodavanje sekvence primarnom kljucu
 alter table projekat.Zaposleni
 	add constraint seq_zap default(next value for seq_zap) for id_zap;
+--------------------------------------------------------------------------
+-- Tabela Radnik 
+CREATE TABLE projekat.Radnik (
+	id_zap numeric(8) not null,
+	StepenSpreme VARCHAR(50),
+	FOREIGN KEY (id_zap) REFERENCES projekat.Zaposleni(id_zap)
+);
+--------------------------------------------------------------------------
+-- Tabela Magacioner
+CREATE TABLE projekat.Magacioner (
+	id_zap numeric(8) not null,
+	FOREIGN KEY (id_zap) REFERENCES projekat.Zaposleni(id_zap)
+);
+--------------------------------------------------------------------------
+-- Tabela Porduzbina
+CREATE TABLE projekat.Porudzbina (
+	id_por numeric(8) not null, --PorudzbinaID
+	Cena numeric(10,2) not null,
+	Datum_por date not null,
+	Popust numeric(10,2) not null,
+	constraint PK_porudzbina primary key(id_por)
+);
+
+--Dodavanje sekvence primarnom kljucu
+alter table projekat.Porudzbina
+	add constraint seq_por default(next value for seq_por) for id_por;
 --------------------------------------------------------------------------
